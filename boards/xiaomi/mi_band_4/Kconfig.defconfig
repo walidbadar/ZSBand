@@ -1,11 +1,18 @@
 # Copyright (c) 2024 Renesas Electronics Corporation
-# Copyright (c) 2025, Muhammad Waleed Badar
+# Copyright (c) 2026 Muhammad Waleed Badar
 # SPDX-License-Identifier: Apache-2.0
 
 if BOARD_MI_BAND_4
 
 config I2C_CALLBACK
 	default y if I2C_SMARTBOND
+
+if PM || PM_DEVICE || PM_DEVICE_RUNTIME
+
+# Increase stack size to avoid raising usage-fault
+# exceptions due to stack overflow.
+config IDLE_STACK_SIZE
+	default 2048
 
 # Make sure the serial device has higher
 # initialization priority.

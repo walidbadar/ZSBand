@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET_CFG="${1:-renesas_smartbond.cfg}"
+TARGET_CFG="${1:-renesas-smartbond.cfg}"
 echo "TARGET_CFG: $TARGET_CFG"
 
 ADAPTER_CFG="${2:-rpi-swd.cfg}"

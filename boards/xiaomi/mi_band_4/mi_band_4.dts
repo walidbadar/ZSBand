@@ -1,18 +1,18 @@
 /*
  * Copyright (c) 2022 Renesas Electronics Corporation and/or its affiliates
- * Copyright (c) 2025, Muhammad Waleed Badar
+ * Copyright (c) 2026 Muhammad Waleed Badar
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
 /dts-v1/;
+
 #include <renesas/smartbond/da14697.dtsi>
 #include "mi_band_4-pinctrl.dtsi"
-#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 / {
 	model = "Xiaomi Mi Band 4";
-	compatible = "xiaomi,mi_band_4";
+	compatible = "xiaomi,mi_band_4", "renesas,da14697";
 	#address-cells = <1>;
 	#size-cells = <1>;
 
@@ -23,12 +23,6 @@
 		zephyr,shell-uart = &uart;
 		zephyr,code-partition = &slot0_partition;
 		zephyr,bt-hci = &bt_hci_da1469x;
-	};
-
-	sysclk: system-clock {
-		compatible = "fixed-clock";
-		clock-frequency = <32000000>;
-		#clock-cells = <0>;
 	};
 };
 
@@ -44,49 +38,24 @@
 		 */
 		boot_partition: partition@2400 {
 			label = "mcuboot";
-			reg = <0x000002400 0x00009c00>;
+			reg = <0x000002400 0x0000dc00>;
 		};
-		slot0_partition: partition@c000 {
+
+		slot0_partition: partition@10000 {
 			label = "image-0";
-			reg = <0x0000c000 0x00076000>;
+			reg = <0x00010000 DT_SIZE_K(1024)>;
 		};
-		slot1_partition: partition@82000 {
+
+		slot1_partition: partition@110000 {
 			label = "image-1";
-			reg = <0x00082000 0x00076000>;
+			reg = <0x00110000 DT_SIZE_K(1024)>;
 		};
-		storage_partition: partition@f8000 {
+
+		storage_partition: partition@210000 {
 			label = "storage";
-			reg = <0x000f8000 0x00F08000>;
+			reg = <0x00210000 DT_SIZE_K(14272)>;
 		};
 	};
-};
-
-&rc32m {
-	status = "disabled";
-};
-
-&xtal32k {
-	status = "okay";
-};
-
-/*
- * On board level we switch to XTAL32K and
- * so RCX can be disabled.
- */
-&rcx {
-	status = "disabled";
-};
-
-&lp_clk {
-	clock-src = <&xtal32k>;
-};
-
-&xtal32m {
-	status = "okay";
-};
-
-&sys_clk {
-	clock-src = <&xtal32m>;
 };
 
 &gpio0 {
@@ -98,10 +67,10 @@
 };
 
 &uart {
-	current-speed = <115200>;
-	status = "okay";
 	pinctrl-0 = <&uart_default>;
 	pinctrl-names = "default";
+	current-speed = <115200>;
+	status = "okay";
 };
 
 &i2c {
@@ -114,20 +83,6 @@
 &i2c2 {
 	pinctrl-0 = <&i2c2_default>;
 	pinctrl-1 = <&i2c2_sleep>;
-	pinctrl-names = "default", "sleep";
-	status = "okay";
-};
-
-&spi {
-	pinctrl-0 = <&spi_controller>;
-	pinctrl-1 = <&spi_sleep>;
-	pinctrl-names = "default", "sleep";
-	status = "okay";
-};
-
-&spi2 {
-	pinctrl-0 = <&spi2_controller>;
-	pinctrl-1 = <&spi2_sleep>;
 	pinctrl-names = "default", "sleep";
 	status = "okay";
 };

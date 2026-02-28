@@ -1,5 +1,5 @@
 identifier: mi_band_4
-name: MI_BAND_4
+name: Xiaomi Mi Band 4
 type: mcu
 arch: arm
 ram: 512
@@ -12,12 +12,8 @@ supported:
   - hwinfo
   - watchdog
   - i2c
-  - spi
-  - usb_device
   - rtc
   - crypto
   - dma
-  - display
   - memc
-  - usbd
-vendor: renesas
+vendor: xiaomi
